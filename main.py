@@ -1,22 +1,25 @@
 class Product:
 
-    def __init__(self, title: str, price: float):
+    def __init__(self, title: str, description: str, price: float, weight: float):
         self.title = title
         self.price = price
+        self.weight = weight
+        self.description = description
 
     def __str__(self):
-        return f'{self.title}: {self.price}'
+        return f'{self.title}: {self.description}, Volume: {self.weight}, Price: {self.price}'
 
 
 class Customer:
 
-    def __init__(self, surname: str, name: str, phone: str):
+    def __init__(self, surname: str, name: str, phone: str, email: str):
         self.surname = surname
         self.name = name
         self.phone = phone
+        self.email = email
 
     def __str__(self):
-        return f'{self.surname} {self.name}; {self.phone}'
+        return f'{self.surname} {self.name}; {self.phone}, {self.email}'
 
 
 class Cart:
@@ -26,7 +29,7 @@ class Cart:
         self.__products = []
         self.__quantities = []
 
-    def add_product(self, product: Product, quantity: float=1):
+    def add_product(self, product: Product, quantity: float = 1):
         if product in self.__products:
             index = self.__products.index(product)
             self.__quantities[index] += quantity
@@ -46,21 +49,15 @@ class Cart:
         return f'{customer}\n{res}\nTotal: {self.total()} UAH'
 
 
-apple = Product('apple', 20)
-banana = Product('banana', 30)
-orange = Product('orange', 40)
+beer = Product('Beer', 'Chernihivske', 32.00, 0.5)
+vine = Product('Vine', 'Koblevo', 75.00, 0.75)
+samogon = Product('Samogon', 'Did Vasyl', 1000.00, 1)
 
-customer = Customer('Ivanov', 'Ivan', '+380990000001')
+customer = Customer('Osypenko', 'Kostiantyn', '+380938522850', 'osypenk.k@gmail.com')
 
 order = Cart(customer)
-order.add_product(apple, 3)
-order.add_product(banana)
-order.add_product(orange, 0.5)
+order.add_product(beer, 2)
+order.add_product(vine, 1)
+order.add_product(samogon, 1)
 
 print(order)
-
-
-
-print(order.__dict__)
-print(order._Cart__products)
-print(order._Cart__quantities)
