@@ -3,6 +3,8 @@ class Product:
     def __init__(self, title: str, description: str, price: float, weight: float):
         self.title = title
         self.price = price
+        if price <= 0:
+                raise PriceError(self.price, "Price less or equal zero")
         self.weight = weight
         self.description = description
 
@@ -48,8 +50,17 @@ class Cart:
 
         return f'{customer}\n{res}\nTotal: {self.total()} UAH'
 
+class PriceError(Exception):
+    def __init__(self, value: float, message: str):
+        self.value = value
+        self.message = message
 
-beer = Product('Beer', 'Chernihivske', 32.00, 0.5)
+    def __str__(self):
+        return f'{self.value}, {self.message}'
+
+
+
+beer = Product('Beer', 'Chernihivske', -5, 0.5)
 vine = Product('Vine', 'Koblevo', 75.00, 0.75)
 samogon = Product('Samogon', 'Did Vasyl', 1000.00, 1)
 
