@@ -2,7 +2,6 @@
 In this class we create methods to add a new product to shopping cart, count total pice in cart
 and returns a complete check
 """
-import customer
 from customer import Customer
 from product import Product
 class Cart:
@@ -29,4 +28,41 @@ class Cart:
             zip(self.__products, self.__quantities))
         )
 
-        return f'{customer.Customer}\n{res}\nTotal: {self.total()} UAH'
+        return f'{self.customer}\n{res}\nTotal: {self.total()} UAH'
+
+    def __iter__(self):
+        return CartIter(self.__products, self.__quantities)
+
+    def __getitem__(self, item):
+        if isinstance(item, int):
+            if item > len(self.__products):
+                raise IndexError
+            return self.__products[item]
+        if isinstance(item, slice):
+            res = []
+            start = item.start or 0
+            stop = item.stop or len(self.__products)
+            step = item.step or 1
+
+            for i in range(start, stop, step):
+                res.append(self.__products[i])
+            return res
+
+        raise TypeError()
+
+    def __len__(self):
+        return len(self.__products)
+
+
+class CartIter:
+
+    def __init__(self, products: list, quantities: list):
+        self.products = products
+        self.quantities = quantities
+        self.index = 0
+
+    def __next__(self):
+        if self.index < len(self.products):
+            self.index += 1
+            return self.products[self.index - 1], self.quantities[self.index - 1]
+        raise StopIteration
